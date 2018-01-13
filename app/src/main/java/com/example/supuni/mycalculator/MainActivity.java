@@ -37,11 +37,26 @@ public class MainActivity extends AppCompatActivity {
         updateScreen();
     }
 
+    private boolean isOperator (char op){
+        switch (op){
+            case '+':
+            case '-':
+            case '*':
+            case '/':return true;
+            default:return false;
+        }
+    }
+
     public void onClickOperator(View v){
         if(result != ""){
             display =result;
             result = "";
         }
+
+        if(currentOperator != "") {
+            display.charAt(display.length()-1);
+        }
+
         Button b =(Button)v;
         display +=b.getText();
         currentOperator=b.getText().toString();
