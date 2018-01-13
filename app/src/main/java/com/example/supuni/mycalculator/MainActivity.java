@@ -48,17 +48,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickOperator(View v){
+        if(display == "")
+            return;
+
         Button b =(Button)v;
+
         if(result != ""){
-            display =result;
-            result = "";
+            String display =result;
+            clear();
+            display =display;
         }
 
         if(currentOperator != "") {
+            Log.d("Calc",""+display.charAt(display.length()-1));
             if(isOperator(display.charAt(display.length()-1))) {
-                currentOperator =b.getText().toString();
-                        display.replace(display.charAt(display.length()-1),currentOperator.charAt(0));
+                display=display.replace(display.charAt(display.length()-1),currentOperator.charAt(0));
+                updateScreen();
+                return;
+            }else{
+                getResult();
+                display =result;
+                result ="";
             }
+            currentOperator =b.getText().toString();
         }
 
         display +=b.getText();
@@ -100,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickEqual(View v){
+        if(display == "")
+            return;
         if(!getResult())
             return;
         screen.setText(display + "\n" +String.valueOf(result));
