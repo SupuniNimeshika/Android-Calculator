@@ -48,16 +48,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickOperator(View v){
+        Button b =(Button)v;
         if(result != ""){
             display =result;
             result = "";
         }
 
         if(currentOperator != "") {
-            display.charAt(display.length()-1);
+            if(isOperator(display.charAt(display.length()-1))) {
+                currentOperator =b.getText().toString();
+                        display.replace(display.charAt(display.length()-1),currentOperator.charAt(0));
+            }
         }
 
-        Button b =(Button)v;
         display +=b.getText();
         currentOperator=b.getText().toString();
         updateScreen();
@@ -87,11 +90,18 @@ public class MainActivity extends AppCompatActivity {
             default:return -1;
         }
     }
-    public void onClickEqual(View v){
-        String[] operation =display.split(Pattern.quote(currentOperator));
-        if(operation.length<2)return;
 
-        result = String.valueOf(operate(operation[0],operation[1],currentOperator));
+    private boolean getResult(){
+       String[] operation =display.split(Pattern.quote(currentOperator));
+       if(operation.length < 2)
+           return false;
+       result = String.valueOf(operate(operation[0],operation[1],currentOperator));
+            return true;
+    }
+
+    public void onClickEqual(View v){
+        if(!getResult())
+            return;
         screen.setText(display + "\n" +String.valueOf(result));
     }
 }
