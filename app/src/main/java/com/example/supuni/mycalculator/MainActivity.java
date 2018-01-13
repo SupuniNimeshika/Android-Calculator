@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView screen;
     private String display="";
     private String currentOperator="";
+    private String result ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +27,21 @@ public class MainActivity extends AppCompatActivity {
         screen.setText(display);
     }
 
-    public void onClickNumber (View v){
+    public void onClickNumber (View  v){
+        if(result != "") {
+            clear();
+            updateScreen();
+        }
         Button b= (Button) v;
         display += b.getText();
         updateScreen();
     }
 
     public void onClickOperator(View v){
+        if(result != ""){
+            display =result;
+            result = "";
+        }
         Button b =(Button)v;
         display +=b.getText();
         currentOperator=b.getText().toString();
@@ -42,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public void clear(){
         display ="";
         currentOperator="";
-        updateScreen();
+        result ="";
     }
 
     public void onClickClear(View v){
@@ -67,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         String[] operation =display.split(Pattern.quote(currentOperator));
         if(operation.length<2)return;
 
-        Double result = operate(operation[0],operation[1],currentOperator);
+        result = String.valueOf(operate(operation[0],operation[1],currentOperator));
         screen.setText(display + "\n" +String.valueOf(result));
     }
 }
